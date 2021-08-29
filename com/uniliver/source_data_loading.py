@@ -11,14 +11,6 @@ if __name__ == '__main__':
         '--packages "org.apache.hadoop:hadoop-aws:2.7.4" pyspark-shell'
     )
 
-    # Create the SparkSession
-    spark = SparkSession \
-        .builder \
-        .appName("DSL examples") \
-        .master('local[*]') \
-        .config("spark.mongodb.input.uri", app_secret["mongodb_config"]["uri"]) \
-        .getOrCreate()
-    spark.sparkContext.setLogLevel('ERROR')
 
     current_dir = os.path.abspath(os.path.dirname(__file__))
     app_config_path = os.path.abspath(current_dir + "/../../../" + "application.yml")
@@ -28,6 +20,14 @@ if __name__ == '__main__':
     app_conf = yaml.load(conf, Loader=yaml.FullLoader)
     secret = open(app_secrets_path)
     app_secret = yaml.load(secret, Loader=yaml.FullLoader)
+
+    # Create the SparkSession
+    spark = SparkSession \
+        .builder \
+        .appName("DSL examples") \
+        .master('local[*]') \
+        .getOrCreate()
+    spark.sparkContext.setLogLevel('ERROR')
 
     # Setup spark to use s3
     hadoop_conf = spark.sparkContext._jsc.hadoopConfiguration()
@@ -112,5 +112,5 @@ if __name__ == '__main__':
 
 
 
-# spark-submit --packages "mysql:mysql-connector-java:8.0.15" dataframe/ingestion/others/systems/mysql_df.py
+# spark-submit --packages "mysql:mysql-connector-java:8.0.15" com/uniliver/source_data_loading.py
 # spark-submit --packages "com.springml:spark-sftp_2.11:1.1.1" dataframe/ingestion/others/systems/sftp_df.py
