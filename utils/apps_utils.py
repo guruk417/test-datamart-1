@@ -1,4 +1,4 @@
-def read_from_mysql(jdbc_params, mysql_conf, spark):
+def read_from_mysql(jdbc_params, spark):
     return spark \
         .read.format("jdbc") \
         .option("driver", "com.mysql.cj.jdbc.Driver") \
