@@ -5,8 +5,12 @@ def read_from_mysql(jdbc_params, mysql_conf, spark):
         .options(**jdbc_params) \
         .load()
 
-def read_from_sftp():
-    ""
+
+def read_from_sftp(spark,file_loc,sftp_options):
+    return spark \
+        .read.format("com.springml.spark.sftp") \
+        .options(**sftp_options)\
+        .load(file_loc)
 
 
 def write_to_sftp():

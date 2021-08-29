@@ -2,7 +2,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 import os.path
 import yaml
-import utils.app_utils as ut
+import utils.apps_utils as ut
 
 
 if __name__ == '__main__':
@@ -16,6 +16,7 @@ if __name__ == '__main__':
         .builder \
         .appName("DSL examples") \
         .master('local[*]') \
+        .config("spark.mongodb.input.uri", app_secret["mongodb_config"]["uri"]) \
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
 
@@ -57,17 +58,17 @@ if __name__ == '__main__':
                 .partitionBy("run_dt")\
                 .mode("overwrite")\
                 .parquet(stg_path)
-
         elif src == 'OL':
-            ol_df = spark.read \
-                .format("com.springml.spark.sftp") \
-                .option("host", app_secret["sftp_conf"]["hostname"]) \
-                .option("port", app_secret["sftp_conf"]["port"]) \
-                .option("username", app_secret["sftp_conf"]["username"]) \
-                .option("pem", os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
-                .option("fileType", "csv") \
-                .option("delimiter", "|") \
-                .load(src_conf["sftp_conf"]["directory"] + "/" + src_conf["sftp_conf"]["filename"]) \
+            sftp_options = {
+                "host": app_secret["sftp_conf"]["hostname"],
+                "port": app_secret["sftp_conf"]["port"],
+                "username": app_secret["sftp_conf"]["username"],
+                "pem": os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"]),
+                "fileType": "csv",
+                "delimiter": "|"
+            }
+            file_loc = src_conf["sftp_conf"]["directory"] + "/" + src_conf["sftp_conf"]["filename"]
+            ol_df = ut.read_from_sftp(spark, file_loc, sftp_options)\
                 .withColumn("run_dt", current_date())
 
             ol_df.show()
@@ -77,7 +78,35 @@ if __name__ == '__main__':
                 .mode("overwrite")\
                 .parquet(stg_path)
 
+        elif src == 'CP':
+            cp_df = spark.read \
+                .option("header", "true") \
+                .option("delimiter", "|") \
+                .format("csv") \
+                .schema("inferSchema",True) \
+                .load("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"]+ "/KC_Extract_1_20171009.csv") \
+                .withColumn("run_dt", current_date())
 
+            cp_df \
+                .write \
+                .partitionBy("run_dt") \
+                .mode("overwrite") \
+                .parquet(stg_path)
+
+        elif src == "MP":
+            mp_df = spark \
+                .read \
+                .format("com.mongodb.spark.sql.DefaultSource") \
+                .option("database", app_conf["mongodb_config"]["database"]) \
+                .option("collection", app_conf["mongodb_config"]["collection"]) \
+                .load() \
+                .withColumn("run_dt", current_date())
+
+            mp_df \
+                .write \
+                .partitionBy("run_dt") \
+                .mode("overwrite") \
+                .parquet(stg_path)
 
 
 

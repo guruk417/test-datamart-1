@@ -19,8 +19,8 @@ s3_conf:
   staging_dir: staging
 
 mongodb_config:
-  database: school
-  collection: students
+  database: cust
+  collection: address
 
 redshift_conf:
   filetype: csv
