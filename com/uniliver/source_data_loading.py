@@ -10,7 +10,7 @@ if __name__ == '__main__':
         '--packages "org.apache.hadoop:hadoop-aws:2.7.4" pyspark-shell'
     )
 
-    # define abspath and secrets path 2
+    # define abspath and secrets path 3
     current_dir = os.path.abspath(os.path.dirname(__file__))
     app_config_path = os.path.abspath(current_dir + "/../../" + "application.yml")
     app_secrets_path = os.path.abspath(current_dir + "/../../" + ".secrets")
