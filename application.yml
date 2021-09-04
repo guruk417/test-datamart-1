@@ -1,5 +1,5 @@
 source_list:
-  - MP
+  - CP
 
 SB:
   mysql_conf:
@@ -12,14 +12,16 @@ OL:
       delimiter: |
       directory: /home/ubuntu/data
       filename: receipts_delta_GBR_14_10_2017.csv
+CP:
+  s3_conf:
+    s3_bucket: binod-505
+    cust_dir: data
+    filename: KC_Extract_1_20171009.csv
 
-s3_conf:
-  s3_bucket: binod-505
-  staging_dir: staging
-
-mongodb_config:
-  database: cust
-  collection: address
+ADDR:
+  mongodb_config:
+    database: cust
+    collection: address
 
 redshift_conf:
   filetype: csv

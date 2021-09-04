@@ -84,7 +84,7 @@ if __name__ == '__main__':
                 .option("delimiter", "|") \
                 .format("csv") \
                 .schema("inferSchema",True) \
-                .load("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"]+ "/KC_Extract_1_20171009.csv") \
+                .load("s3a://" + src_conf["s3_conf"]["s3_bucket"] + "/" + src_conf["s3_conf"]["cust_dir"] + "/" + src_conf["s3_conf"]["filename"]) \
                 .withColumn("run_dt", current_date())
 
             cp_df \
@@ -93,16 +93,22 @@ if __name__ == '__main__':
                 .mode("overwrite") \
                 .parquet(stg_path)
 
-        elif src == "MP":
-            mp_df = spark \
+        elif src == "ADDR":
+            addr_df = spark \
                 .read \
                 .format("com.mongodb.spark.sql.DefaultSource") \
                 .option("database", app_conf["mongodb_config"]["database"]) \
                 .option("collection", app_conf["mongodb_config"]["collection"]) \
-                .load() \
+                .load()
+
+            addr_df.select(col('consumer_id'),
+                           col("address.street").alias("street"),
+                           col("address.city").alias("city"),
+                           col("address.state").alias("state"),
+                           col("mobile-no")) \
                 .withColumn("run_dt", current_date())
 
-            mp_df \
+            addr_df \
                 .write \
                 .partitionBy("run_dt") \
                 .mode("overwrite") \
