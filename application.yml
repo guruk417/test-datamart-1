@@ -1,5 +1,5 @@
 source_list:
-  - ADDR
+  - CP
 
 SB:
   mysql_conf:
