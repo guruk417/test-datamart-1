@@ -27,8 +27,8 @@ sudo yum update -y
 sudo yum install git-core -y
 pip install pyyaml==5.3.1
 
-git clone https://github.com/Binosaho/test-datamart.git
-cd dataframe-examples-py
+git clone https://github.com/guru417/test-datamart.git
+cd test-datamart-py
 export PYTHONPATH="$PWD"
 
 # Copy 2 files (private key and .secrets) from local to EMR cluster's master node,
