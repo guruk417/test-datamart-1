@@ -4,18 +4,18 @@ import os.path
 import yaml
 import utils.apps_utils as ut
 
-
 if __name__ == '__main__':
 
     os.environ["PYSPARK_SUBMIT_ARGS"] = (
         '--packages "org.apache.hadoop:hadoop-aws:2.7.4" pyspark-shell'
     )
 
-
+    # define abspath and secrets path
     current_dir = os.path.abspath(os.path.dirname(__file__))
     app_config_path = os.path.abspath(current_dir + "/../../" + "application.yml")
     app_secrets_path = os.path.abspath(current_dir + "/../../" + ".secrets")
 
+    # load application and secret files
     conf = open(app_config_path)
     app_conf = yaml.load(conf, Loader=yaml.FullLoader)
     secret = open(app_secrets_path)
@@ -51,13 +51,13 @@ if __name__ == '__main__':
                            "user": app_secret["mysql_conf"]["username"],
                            "password": app_secret["mysql_conf"]["password"]
                            }
-            sb_df = ut.read_from_mysql(jdbc_params, spark)\
+            sb_df = ut.read_from_mysql(jdbc_params, spark) \
                 .withColumn("run_dt", current_date())
             sb_df.show()
 
-            sb_df.write\
-                .partitionBy("run_dt")\
-                .mode("overwrite")\
+            sb_df.write \
+                .partitionBy("run_dt") \
+                .mode("overwrite") \
                 .parquet(stg_path)
         elif src == 'OL':
             sftp_options = {
@@ -69,14 +69,14 @@ if __name__ == '__main__':
                 "delimiter": "|"
             }
             file_loc = src_conf["sftp_conf"]["directory"] + "/" + src_conf["sftp_conf"]["filename"]
-            ol_df = ut.read_from_sftp(spark, file_loc, sftp_options)\
+            ol_df = ut.read_from_sftp(spark, file_loc, sftp_options) \
                 .withColumn("run_dt", current_date())
 
             ol_df.show()
 
-            ol_df.write\
-                .partitionBy("run_dt")\
-                .mode("overwrite")\
+            ol_df.write \
+                .partitionBy("run_dt") \
+                .mode("overwrite") \
                 .parquet(stg_path)
 
         elif src == 'CP':
@@ -85,7 +85,8 @@ if __name__ == '__main__':
                 .option("delimiter", "|") \
                 .format("csv") \
                 .option("inferSchema", "true") \
-                .load("s3a://" + src_conf["s3_conf"]["s3_bucket"] + "/" + src_conf["s3_conf"]["cust_dir"] + "/" + src_conf["s3_conf"]["filename"]) \
+                .load("s3a://" + src_conf["s3_conf"]["s3_bucket"] + "/" + src_conf["s3_conf"]["cust_dir"] + "/" +
+                      src_conf["s3_conf"]["filename"]) \
                 .withColumn("run_dt", current_date())
 
             cp_df.show()
@@ -119,11 +120,7 @@ if __name__ == '__main__':
                 .mode("overwrite") \
                 .parquet(stg_path)
 
-
-
-
-
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4,mysql:mysql-connector-java:8.0.15,com.springml:spark-sftp_2.11:1.1.1,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" com/uniliver/source_data_loading.py
 # spark-submit --packages "com.springml:spark-sftp_2.11:1.1.1" dataframe/ingestion/others/systems/sftp_df.py
-#spark-submit --packages "org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" com/uniliver/source_data_loading.py
-#spark-submit --packages "org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" com/uniliver/source_data_loading.py
+# spark-submit --packages "org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" com/uniliver/source_data_loading.py
+# spark-submit --packages "org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" com/uniliver/source_data_loading.py

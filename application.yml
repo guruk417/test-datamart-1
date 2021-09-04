@@ -1,17 +1,17 @@
 source_list:
-  - ADDR
+  - SB
 
 SB:
   mysql_conf:
     partition_column: App_Transaction_Id
-    query : "(select * from testdb.TRANSACTIONSYNC) as t"
+    query: "(select * from testdb.TRANSACTIONSYNC) as t"
 
 OL:
   sftp_conf:
-      filetype: csv
-      delimiter: |
-      directory: /home/ubuntu/data
-      filename: receipts_delta_GBR_14_10_2017.csv
+    filetype: csv
+    delimiter: |
+    directory: /home/ubuntu/data
+    filename: receipts_delta_GBR_14_10_2017.csv
 CP:
   s3_conf:
     s3_bucket: binod-505
