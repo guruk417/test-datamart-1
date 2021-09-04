@@ -114,3 +114,4 @@ if __name__ == '__main__':
 
 # spark-submit --packages "mysql:mysql-connector-java:8.0.15,com.springml:spark-sftp_2.11:1.1.1" com/uniliver/source_data_loading.py
 # spark-submit --packages "com.springml:spark-sftp_2.11:1.1.1" dataframe/ingestion/others/systems/sftp_df.py
+#spark-submit --packages "org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" com/uniliver/source_data_loading.py

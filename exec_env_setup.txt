@@ -27,7 +27,7 @@ sudo yum update -y
 sudo yum install git-core -y
 pip install pyyaml==5.3.1
 
-git clone https://github.com/Binosaho/dataframe-examples-py.git
+git clone https://github.com/Binosaho/test-datamart.git
 cd dataframe-examples-py
 export PYTHONPATH="$PWD"
 
