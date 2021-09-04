@@ -24,7 +24,7 @@ ADDR:
     collection: address
 
 s3_conf:
-  s3_bucket: binod-505
+  s3_bucket: guru-1234
   staging_dir: staging
 
 
