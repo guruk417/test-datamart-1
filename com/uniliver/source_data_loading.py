@@ -83,9 +83,11 @@ if __name__ == '__main__':
                 .option("header", "true") \
                 .option("delimiter", "|") \
                 .format("csv") \
-                .schema("inferSchema",True) \
+                .option("inferSchema", "true") \
                 .load("s3a://" + src_conf["s3_conf"]["s3_bucket"] + "/" + src_conf["s3_conf"]["cust_dir"] + "/" + src_conf["s3_conf"]["filename"]) \
                 .withColumn("run_dt", current_date())
+
+            cp_df.show()
 
             cp_df \
                 .write \
