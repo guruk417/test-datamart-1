@@ -99,8 +99,8 @@ if __name__ == '__main__':
             addr_df = spark \
                 .read \
                 .format("com.mongodb.spark.sql.DefaultSource") \
-                .option("database", app_conf["mongodb_config"]["database"]) \
-                .option("collection", app_conf["mongodb_config"]["collection"]) \
+                .option("database", src_conf["mongodb_config"]["database"]) \
+                .option("collection", src_conf["mongodb_config"]["collection"]) \
                 .load()
 
             addr_df.select(col('consumer_id'),
