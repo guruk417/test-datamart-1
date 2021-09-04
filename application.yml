@@ -16,13 +16,17 @@ CP:
   s3_conf:
     s3_bucket: binod-505
     cust_dir: data
-    staging_dir: staging
     filename: KC_Extract_1_20171009.csv
 
 ADDR:
   mongodb_config:
     database: cust
     collection: address
+
+s3_conf:
+  s3_bucket: binod-505
+  staging_dir: staging
+
 
 redshift_conf:
   filetype: csv
