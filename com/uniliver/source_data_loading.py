@@ -104,6 +104,8 @@ if __name__ == '__main__':
                 .option("collection", src_conf["mongodb_config"]["collection"]) \
                 .load()
 
+            addr_df.show()
+
             addr_df.select(col('consumer_id'),
                            col("address.street").alias("street"),
                            col("address.city").alias("city"),
