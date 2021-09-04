@@ -31,6 +31,6 @@ git clone https://github.com/guru417/test-datamart-1.git
 cd test-datamart-py
 export PYTHONPATH="$PWD"
 
-# Copy 2 files (private key and .secrets) from local to EMR cluster's master node,
+# Copy 2 files (private key and .secrets) from local to EMR cluster's master node,1
 scp -i test.pem xyz.pem hadoop@<cluster_dns_name>:/home/hadoop/dataframe-examples-py/
 scp -i test.pem .secrets hadoop@<cluster_dns_name>:/home/hadoop/dataframe-examples-py/
