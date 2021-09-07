@@ -59,6 +59,7 @@ if __name__ == '__main__':
                 .partitionBy("run_dt")\
                 .mode("overwrite")\
                 .parquet(stg_path)
+
         elif src == 'OL':
             sftp_options = {
                 "host": app_secret["sftp_conf"]["hostname"],
