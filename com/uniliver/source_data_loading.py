@@ -62,6 +62,7 @@ if __name__ == '__main__':
                 .parquet(stg_path)
             # test
         elif src == 'OL':
+            # hello
             sftp_options = {
                 "host": app_secret["sftp_conf"]["hostname"],
                 "port": app_secret["sftp_conf"]["port"],
