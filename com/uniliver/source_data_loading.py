@@ -15,7 +15,7 @@ if __name__ == '__main__':
     app_config_path = os.path.abspath(current_dir + "/../../" + "application.yml")
     app_secrets_path = os.path.abspath(current_dir + "/../../" + ".secrets")
 
-    # load application and secret files
+    # load application and secret files2afwfweg
     conf = open(app_config_path)
     app_conf = yaml.load(conf, Loader=yaml.FullLoader)
     secret = open(app_secrets_path)
@@ -40,6 +40,7 @@ if __name__ == '__main__':
     for src in src_list:
         src_conf = app_conf[src]
         stg_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + staging_dir + "/" + src
+        # mySQL(RDS) working
         if src == 'SB':
             print("\nReading data from MySQL DB - SB,")
             jdbc_params = {"url": ut.get_mysql_jdbc_url(app_secret),
