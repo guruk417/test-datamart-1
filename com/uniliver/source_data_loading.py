@@ -62,7 +62,7 @@ if __name__ == '__main__':
                 .parquet(stg_path)
             # test
         elif src == 'OL':
-            # hello
+            # SFTP is working
             sftp_options = {
                 "host": app_secret["sftp_conf"]["hostname"],
                 "port": app_secret["sftp_conf"]["port"],
@@ -88,8 +88,7 @@ if __name__ == '__main__':
                 .option("delimiter", "|") \
                 .format("csv") \
                 .option("inferSchema", "true") \
-                .load("s3a://" + src_conf["s3_conf"]["s3_bucket"] + "/" + src_conf["s3_conf"]["cust_dir"] + "/" +
-                      src_conf["s3_conf"]["filename"]) \
+                .load("s3a://" + src_conf["s3_conf"]["s3_bucket"] + "/" + src_conf["s3_conf"]["filename"]) \
                 .withColumn("run_dt", current_date())
 
             cp_df.show()

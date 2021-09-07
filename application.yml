@@ -1,5 +1,5 @@
 source_list:
-  - OL
+  - CP
 
 SB:
   mysql_conf:
@@ -15,7 +15,6 @@ OL:
 CP:
   s3_conf:
     s3_bucket: guru-1234
-    cust_dir: data
     filename: KC_Extract_1_20171009.csv
 
 ADDR:
